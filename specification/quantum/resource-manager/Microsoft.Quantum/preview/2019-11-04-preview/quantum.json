@@ -329,6 +329,35 @@
           "nextLinkName": "nextLink"
         }
       }
+    },
+    "/providers/microsoft.quantum/operations": {
+      "get": {
+        "description": "Returns list of operations.",
+        "operationId": "Operations_List",
+        "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation details.",
+            "schema": {
+              "$ref": "#/definitions/operationsList"
+            }
+          },
+          "default": {
+            "description": "Error response describing why the operation failed.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "deprecated": false,
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
     }
   },
   "definitions": {
@@ -493,6 +522,10 @@
           },
           "description": "Provisioning status field"
         },
+        "resourceUsageId": {
+          "type": "string",
+          "description": "Id to track resource usage."
+        },
         "storageAccount": {
           "type": "string",
           "description": "ARM Resource Id of the storage account associated with this workspace."
@@ -583,6 +616,20 @@
           "items": {
             "$ref": "#/definitions/SkuDescription"
           }
+        },
+        "quotaDimensions": {
+          "type": "array",
+          "description": "The list of quota dimensions from the provider",
+          "items": {
+            "$ref": "#/definitions/QuotaDimension"
+          }
+        },
+        "pricingDimensions": {
+          "type": "array",
+          "description": "The list of pricing dimensions rendered for each sku",
+          "items": {
+            "$ref": "#/definitions/PricingDimension"
+          }
         }
       }
     },
@@ -636,10 +683,90 @@
         },
         "targets": {
           "type": "array",
-          "description": "list of targets for the sku",
+          "description": "The list of targets for this sku",
           "items": {
             "type": "string"
           }
+        },
+        "quotaDimensions": {
+          "type": "array",
+          "description": "The list of quota dimensions for this sku",
+          "items": {
+            "$ref": "#/definitions/QuotaDimension"
+          }
+        },
+        "pricingDetails": {
+          "type": "array",
+          "description": "list of pricing details for the sku",
+          "items": {
+            "$ref": "#/definitions/PricingDetail"
+          }
+        }
+      }
+    },
+    "QuotaDimension": {
+      "type": "object",
+      "description": "Descript quota dimension information to end customer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "dimension id of quota"
+        },
+        "scope": {
+          "type": "string",
+          "description": "scope of quota"
+        },
+        "period": {
+          "type": "string",
+          "description": "reset period of quota"
+        },
+        "quota": {
+          "type": "number",
+          "description": "limit of quota"
+        },
+        "name": {
+          "type": "string",
+          "description": "friendly name of the quota"
+        },
+        "description": {
+          "type": "string",
+          "description": "short description of the quota"
+        },
+        "unit": {
+          "type": "string",
+          "description": "the standard measurement used for the quota"
+        },
+        "unitPlural": {
+          "type": "string",
+          "description": "unit in the plural form"
+        }
+      }
+    },
+    "PricingDetail": {
+      "type": "object",
+      "description": "Descript pricing detail information to end customer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id of the pricing dimension"
+        },
+        "value": {
+          "type": "string",
+          "description": "value of the pricing dimension"
+        }
+      }
+    },
+    "PricingDimension": {
+      "type": "object",
+      "description": "Descript pricing dimension information to end customer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "id of the pricing dimension"
+        },
+        "name": {
+          "type": "string",
+          "description": "name of the pricing dimension"
         }
       }
     },
@@ -684,6 +811,54 @@
           "description": "Id to track resource usage for the provider."
         }
       }
+    },
+    "operation": {
+      "description": "Operation provided by provider",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the operation"
+        },
+        "display": {
+          "type": "object",
+          "description": "Properties of the operation",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "description": "Provider name"
+            },
+            "resource": {
+              "type": "string",
+              "description": "Resource name"
+            },
+            "operation": {
+              "type": "string",
+              "description": "Operation name"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the operation"
+            }
+          }
+        }
+      }
+    },
+    "operationsList": {
+      "description": "Lists the operations available.",
+      "properties": {
+        "nextLink": {
+          "description": "Url to follow for getting next page of operations.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Array of operations",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/operation"
+          }
+        }
+      },
+      "required": [ "value" ]
     }
   },
   "parameters": {
