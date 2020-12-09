@@ -200,10 +200,7 @@
             }
           },
           "204": {
-            "description": "No content.",
-            "schema": {
-              "$ref": "#/definitions/QuantumWorkspace"
-            }
+            "description": "No content."
           },
           "default": {
             "description": "Error response describing why the operation failed.",
@@ -330,7 +327,7 @@
         }
       }
     },
-    "/providers/microsoft.quantum/operations": {
+    "/providers/Microsoft.Quantum/operations": {
       "get": {
         "description": "Returns list of operations.",
         "operationId": "Operations_List",
