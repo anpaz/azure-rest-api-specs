@@ -808,6 +808,10 @@
           "type": "string",
           "description": "Name of the operation"
         },
+        "isDataAction": {
+          "description": "Indicates whether the operation is a data action",
+          "type": "boolean"
+        },
         "display": {
           "type": "object",
           "description": "Properties of the operation",
@@ -834,6 +838,7 @@
     },
     "operationsList": {
       "description": "Lists the operations available.",
+      "type": "object",
       "properties": {
         "nextLink": {
           "description": "Url to follow for getting next page of operations.",
@@ -841,6 +846,7 @@
         },
         "value": {
           "description": "Array of operations",
+          "uniqueItems": false,
           "type": "array",
           "items": {
             "$ref": "#/definitions/operation"
